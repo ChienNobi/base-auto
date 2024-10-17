@@ -9,4 +9,8 @@ public class SystemDefault {
     public static final String SQL_INJECTION_RESULT_FILE = RESOURCE_PATH + "data/SQLInjection.xlsx";
     public static final String XSS_RESULT_FILE = RESOURCE_PATH + "data/XSSSearch.xlsx";
     public static final int WAIT_IMPLICIT = 5000;
+    public static final int WAIT_PAGE_LOAD = 10000;
+
+    public static final String DEFAULT_USER = "thieuvuong1504@gmail.com";
+    public static final String DEFAULT_PASSWORD = "123";
 }

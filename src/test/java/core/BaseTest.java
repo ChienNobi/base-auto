@@ -28,7 +28,7 @@ public class BaseTest {
 
     @AfterClass()
     public void afterClass() {
-        BrowserConfig.quit();
+//        BrowserConfig.quit();
     }
 
     public void initExcelData(String sheetName, String[] headers) throws IOException {

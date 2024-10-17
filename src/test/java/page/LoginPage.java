@@ -1,54 +1,46 @@
 package page;
 
+import constant.Common;
 import core.BasePage;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 public class LoginPage extends BasePage {
-    @FindBy(id = "button_login_home")
-    private WebElement loginButton;
-
-    @FindBy(id = "txtUserName")
+    @FindBy(id = "login")
     private WebElement usernameField;
 
-    @FindBy(id = "txtPassword")
+    @FindBy(id = "password")
     private WebElement passwordField;
 
-    @FindBy(id = "btnSignIn")
-    private WebElement signInButton;
+    @FindBy(xpath = "//button[@type='submit']")
+    private WebElement loginBtn;
 
-    @FindBy(id = "android:id/button2")
-    private WebElement cancelBtn;
-
-    @FindBy(id = "android:id/message")
+    @FindBy(xpath = "//p[@class='alert alert-danger']")
     private WebElement errorMessage;
 
     public LoginPage() {
         super();
-        this.pageUrl = "";
+        this.pageUrl = Common.LOGIN_URL;
         PageFactory.initElements(driver, this);
     }
 
-    public void login(String username, String password) throws InterruptedException {
+    public boolean login(String username, String password) {
         System.out.println("Login with info: " + username + "/" + password);
-        loginButton.click();
         usernameField.sendKeys(username);
         passwordField.sendKeys(password);
-        signInButton.click();
+        action.moveToElement(loginBtn).click(loginBtn).build().perform();
+
+        return isLoginSuccess();
     }
 
-    public String isLoginSuccessfully() {
-        try {
-            String message = errorMessage.getText();
-            cancelBtn.click();
-            return message;
-        } catch (NoSuchElementException e) {
-            return "Pass";
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return e.getMessage();
+    public boolean isLoginSuccess() {
+        if(errorMessage.isDisplayed()) {
+            System.out.println("Has error message: " + errorMessage.getText());
+            return false;
         }
+        System.out.println("Login successfully");
+        return true;
     }
 }
+
