@@ -1,12 +1,14 @@
-package page;
+package pages;
 
 import constant.Common;
 import core.BasePage;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.NotFoundException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-public class LoginPage extends BasePage {
+public class LoginPage extends BasePage<LoginPage> {
     @FindBy(id = "login")
     private WebElement usernameField;
 
@@ -35,10 +37,12 @@ public class LoginPage extends BasePage {
     }
 
     public boolean isLoginSuccess() {
-        if(errorMessage.isDisplayed()) {
-            System.out.println("Has error message: " + errorMessage.getText());
-            return false;
-        }
+        try {
+            if(errorMessage.isDisplayed()) {
+                System.out.println("Has error message: " + errorMessage.getText());
+                return false;
+            }
+        } catch (NoSuchElementException e) {}
         System.out.println("Login successfully");
         return true;
     }

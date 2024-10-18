@@ -4,19 +4,47 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.support.ThreadGuard;
 
 import java.time.Duration;
 import java.util.HashMap;
 
 public class BrowserConfig {
-    private HashMap<String, Object> prefs =  new HashMap<String, Object>();
 
     private static final ThreadLocal<WebDriver> driverThread = new ThreadLocal<>();
-    private static WebDriver driver;
 
-    private BrowserConfig(String language) {
-        prefs.put("intl.accept_languages", language);
+    public static WebDriver getDriver() {
+        return driverThread.get();
+    }
+
+    public static WebDriver setDriver(String browser) {
+        WebDriver driver = createDriver(browser);
+        BrowserConfig.driverThread.set(ThreadGuard.protect(driver));
+        driver.manage().window().maximize();
+        return driver;
+    }
+
+    private static WebDriver createDriver(String browserName) {
+        return switch (browserName.trim().toLowerCase()) {
+            case "chrome" -> initChromeDriver();
+            case "firefox" -> initFirefoxDriver();
+            case "edge" -> initEdgeDriver();
+            default -> {
+                System.out.println("Browser: " + browserName + " is invalid, Launching Chrome as browser of choice...");
+                yield initChromeDriver();
+            }
+        };
+    }
+
+    private static WebDriver initChromeDriver() {
+        System.out.println("Launching Chrome driver...");
+        HashMap<String, Object> prefs =  new HashMap<String, Object>();
+
+        prefs.put("intl.accept_languages", "en");
         prefs.put("download.prompt_for_download", false);
         prefs.put("download.directory_upgrade", true);
         prefs.put("safebrowsing.enabled", true);
@@ -30,18 +58,23 @@ public class BrowserConfig {
         options.addArguments("--verbose");
         options.addArguments("--remote-allow-origins=*");
         WebDriverManager.chromedriver().setup();
-        driver = new ChromeDriver(options);
-        driver.manage().window().maximize();
+        return new ChromeDriver(options);
     }
 
-    public static WebDriver getDriver() {
-        return driverThread.get();
+    private static WebDriver initFirefoxDriver() {
+        System.out.println("Launching Firefox driver...");
+        WebDriverManager.firefoxdriver().setup();
+        FirefoxOptions options = new FirefoxOptions();
+        options.setProfile(new FirefoxProfile());
+        options.addArguments("--window-size=1920,1080");
+        options.addArguments("--disable-dev-shm-usage");
+        return new FirefoxDriver(options);
     }
 
-    public static WebDriver setDriver(String language) {
-        new BrowserConfig(language);
-        BrowserConfig.driverThread.set(ThreadGuard.protect(driver));
-        return driver;
+    private static WebDriver initEdgeDriver() {
+        System.out.println("Launching Edge driver...");
+        WebDriverManager.edgedriver().setup();
+        return new EdgeDriver();
     }
 
     /**
@@ -50,7 +83,7 @@ public class BrowserConfig {
      * @param timeout in millis second
      */
     public static void setWaitImplicit(int timeout) {
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(timeout));
+        getDriver().manage().timeouts().implicitlyWait(Duration.ofMillis(timeout));
     }
 
     public static void quit() {

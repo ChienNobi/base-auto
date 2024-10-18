@@ -1,12 +1,13 @@
-package test;
+package tests;
 
 import core.BaseTest;
 import core.SystemDefault;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import page.MealListPage;
-import page.LoginPage;
+import pages.MealListPage;
+import pages.LoginPage;
+import pages.MealRegisterPage;
 
 import java.io.IOException;
 
@@ -16,17 +17,16 @@ public class LoginTest extends BaseTest {
     public void setUp() throws IOException {
 //        initExcelData("BookingInfo", new String[]{"booking_code", "email", "phone_number", "expected"});
         loginPage = new LoginPage();
-        loginPage.openPage();
-    }
-
-    @Test
-    public void loginTest() throws InterruptedException {
-        if(!this.loginPage.login(SystemDefault.DEFAULT_USER, SystemDefault.DEFAULT_PASSWORD)) {
+        if(!this.loginPage.openPage().login(SystemDefault.DEFAULT_USER, SystemDefault.DEFAULT_PASSWORD)) {
             Assert.fail("Cannot login with current user");
             return;
         }
+    }
 
-        MealListPage home = new MealListPage();
-        home.clickBtnAdd();
+    @Test(description = "TC01")
+    public void TC01() throws InterruptedException {
+        MealRegisterPage page = new MealRegisterPage();
+        page.openPage().waitElementDisplayed(page.formContainer);
+        System.out.println("[Step] Open Meal Register page");
     }
 }

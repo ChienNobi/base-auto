@@ -1,5 +1,7 @@
 package helpers;
 
+import org.testng.annotations.Optional;
+
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -84,12 +86,13 @@ public class RandomHelper {
         return randomDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
     }
 
-    public static String randomPastDate(){
+    public static String randomPastDate(@Optional String format){
+        if(format == null || format.isEmpty()) format = "dd/MM/yyyy";
         LocalDate startDate = LocalDate.of(2020, 1, 1);
         LocalDate endDate = LocalDate.now();
         long randomEpochDay = ThreadLocalRandom.current().nextLong(startDate.toEpochDay(), endDate.toEpochDay() - 1);
         LocalDate randomDate = LocalDate.ofEpochDay(randomEpochDay);
-        return randomDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        return randomDate.format(DateTimeFormatter.ofPattern(format));
     }
 
     public static String randomFutureDate(){

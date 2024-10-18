@@ -4,7 +4,7 @@ import config.BrowserConfig;
 import helpers.ExcelReader;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.*;
-import page.LoginPage;
+import pages.LoginPage;
 
 import java.io.IOException;
 import java.util.List;
@@ -16,14 +16,11 @@ public class BaseTest {
     public ExcelReader excelReader;
     public List<Map<String, String>> testData;
 
-    private void initChrome() {
-        driver = BrowserConfig.setDriver("en");
-        BrowserConfig.setWaitImplicit(SystemDefault.WAIT_IMPLICIT);
-    }
-
     @BeforeSuite
-    public void beforeSuit() throws IOException, InterruptedException {
-        initChrome();
+    @Parameters({"browser"})
+    public void initDriver(String browser) throws IOException, InterruptedException {
+        driver = BrowserConfig.setDriver(browser);
+        BrowserConfig.setWaitImplicit(SystemDefault.WAIT_IMPLICIT);
     }
 
     @AfterClass()

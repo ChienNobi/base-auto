@@ -53,4 +53,9 @@ public class WebElementHelper {
 
         return true;
     }
+
+    public static void sendKeys(WebElement element, String value) {
+        element.clear();
+        element.sendKeys(value);
+    };
 }
