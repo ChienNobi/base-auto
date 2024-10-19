@@ -28,7 +28,7 @@ public class LoginPage extends BasePage<LoginPage> {
     }
 
     public boolean login(String username, String password) {
-        System.out.println("Login with info: " + username + "/" + password);
+        System.out.println("[Step] Login with info: " + username + "/" + password);
         usernameField.sendKeys(username);
         passwordField.sendKeys(password);
         action.moveToElement(loginBtn).click(loginBtn).build().perform();
@@ -43,7 +43,7 @@ public class LoginPage extends BasePage<LoginPage> {
                 return false;
             }
         } catch (NoSuchElementException e) {}
-        System.out.println("Login successfully");
+        System.out.println("[Step] Login successfully");
         return true;
     }
 }

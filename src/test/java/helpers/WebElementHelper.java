@@ -1,13 +1,19 @@
 package helpers;
 
 import config.BrowserConfig;
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import constant.Common;
+import core.SystemDefault;
+import org.openqa.selenium.*;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.time.Duration;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static java.lang.Thread.sleep;
 
 public class WebElementHelper {
 
@@ -24,38 +30,48 @@ public class WebElementHelper {
         inputElement.sendKeys(time);
     }
 
-    public static boolean enterInputRemoteSearch(WebElement inputElement, String text) {
-        inputElement.click();
-        inputElement.sendKeys(text);
+    public static void sendKeys(WebElement element, String value) {
+        element.clear();
+        element.click();
+        element.sendKeys(value);
+    };
 
-        WebDriver driver = BrowserConfig.getDriver();
+
+    public static String getModalDialogText() {
         try {
-            WebElement parent = driver.findElement(By.xpath("//ul[contains(@class, 'ui-menu ui-widget ') and not(contains(@style, 'display: none'))]"));
-            List<WebElement> children = parent.findElements(By.tagName("li"));
+            WebDriver driver = BrowserConfig.getDriver();
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(SystemDefault.WAIT_IMPLICIT));
+            WebElement dialog = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[contains(@class, 'modal-body')]")));
 
-            children.forEach(element -> {
-                System.out.println(element.getText());
-            });
+            String msg = dialog.getText();
+            System.out.println("[Result] Popup dialog with msg: " + msg);
+            return msg;
+        } catch (NoSuchElementException e) {
+            System.out.println("[Result] No popup dialog");
+            return "";
+        }
+    }
+
+    public static List<String> getListValueOfSelect(WebElement selectionElement) {
+        Select select = new Select(selectionElement);
+        List<WebElement> options = select.getOptions();
+        return select.getOptions().stream()
+                .map(WebElement::getText).filter(text -> !text.trim().isEmpty())
+                .collect(Collectors.toList());
+    }
+
+    public static String getSelectedValue(WebElement selectElement) {
+        Select select = new Select(selectElement);
+        return select.getFirstSelectedOption().getText();
+    }
+
+    public static boolean hasElement(WebElement element) {
+        try {
+            WebDriverWait wait = new WebDriverWait(BrowserConfig.getDriver(), Duration.ofMillis(SystemDefault.WAIT_IMPLICIT));
+            wait.until(ExpectedConditions.visibilityOf(element));
+            return true;
         } catch (NoSuchElementException e) {
             return false;
         }
-
-        try {
-            WebElement dialog = driver.findElement(By.xpath("//div[@class='modal-body']"));
-            if(dialog.isDisplayed()) {
-                String msg = dialog.getText();
-                System.out.println("Popup dialog with msg: " + msg);
-                return false;
-            }
-        } catch (NoSuchElementException e) {
-            System.out.println("Found " + text);
-        }
-
-        return true;
     }
-
-    public static void sendKeys(WebElement element, String value) {
-        element.clear();
-        element.sendKeys(value);
-    };
 }

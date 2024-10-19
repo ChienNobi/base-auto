@@ -4,7 +4,7 @@
     <parameter name="browser" value="firefox"/>
     <test name="Login Test">
         <classes>
-            <class name="tests.LoginTest" />
+            <class name="tests.MealRegisterTest" />
         </classes>
     </test> <!-- Test -->
 </suite> <!-- Suite -->

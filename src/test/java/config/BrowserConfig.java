@@ -1,5 +1,6 @@
 package config;
 
+import constant.Common;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -9,6 +10,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.support.ThreadGuard;
+import org.testng.annotations.Optional;
 
 import java.time.Duration;
 import java.util.HashMap;
@@ -21,7 +23,10 @@ public class BrowserConfig {
         return driverThread.get();
     }
 
-    public static WebDriver setDriver(String browser) {
+    public static WebDriver setDriver(@Optional String browser) {
+        if(browser == null || browser.isEmpty()) {
+            browser = Common.BROWSER_TYPE_CHROME;
+        }
         WebDriver driver = createDriver(browser);
         BrowserConfig.driverThread.set(ThreadGuard.protect(driver));
         driver.manage().window().maximize();
@@ -30,9 +35,9 @@ public class BrowserConfig {
 
     private static WebDriver createDriver(String browserName) {
         return switch (browserName.trim().toLowerCase()) {
-            case "chrome" -> initChromeDriver();
-            case "firefox" -> initFirefoxDriver();
-            case "edge" -> initEdgeDriver();
+            case Common.BROWSER_TYPE_CHROME -> initChromeDriver();
+            case Common.BROWSER_TYPE_FIREFOX -> initFirefoxDriver();
+            case Common.BROWSER_TYPE_EDGE -> initEdgeDriver();
             default -> {
                 System.out.println("Browser: " + browserName + " is invalid, Launching Chrome as browser of choice...");
                 yield initChromeDriver();

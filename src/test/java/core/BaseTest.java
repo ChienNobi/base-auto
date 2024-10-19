@@ -10,15 +10,16 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-public class BaseTest {
+public class BaseTest<T> {
     public WebDriver driver;
     public LoginPage loginPage;
     public ExcelReader excelReader;
     public List<Map<String, String>> testData;
+    public T page;
 
     @BeforeSuite
     @Parameters({"browser"})
-    public void initDriver(String browser) throws IOException, InterruptedException {
+    public void initDriver(@Optional String browser) throws IOException, InterruptedException {
         driver = BrowserConfig.setDriver(browser);
         BrowserConfig.setWaitImplicit(SystemDefault.WAIT_IMPLICIT);
     }

@@ -103,10 +103,20 @@ public class RandomHelper {
         return randomDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
     }
 
+    public static String getNextDate() {
+        LocalDate today = LocalDate.now();
+        LocalDate nextDate = today.plusDays(1);
+        return nextDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+    }
+
+    public static String getCurrentDay() {
+        return LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+    }
+
     public static String generateRandomDateOfBirth() {
-        int year = randBetween(1950, 2003); // Ngày sinh trong khoảng từ 1950 đến 2003
+        int year = randBetween(1950, 2003);
         int month = randBetween(1, 12);
-        int day = randBetween(1, 28); // Giả sử tháng 2 chỉ tối đa 28 ngày
+        int day = randBetween(1, 28);
         return String.format("%02d/%02d/%04d", day, month, year);
     }
 
