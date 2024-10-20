@@ -48,7 +48,7 @@ public class MenuRegisterByWeekTest extends BaseTest<MenuRegisterByWeekPage> {
     public void TC02() throws InterruptedException {
         try {
             String error = page.clickSave().getErrorMessage();
-            Assert.assertEquals(error, "Từ Ngày");
+            Assert.assertEquals(error, "Từ ngày");
         } catch (Exception e) {
             System.out.println("[Error] Have an error : " + e.getMessage());
             Assert.fail();
@@ -58,7 +58,7 @@ public class MenuRegisterByWeekTest extends BaseTest<MenuRegisterByWeekPage> {
     @Test(description = "Empty meal type", priority = 3)
     public void TC03() throws InterruptedException {
         try {
-            String errorMessage = page.selectDateTimeInPass().fillMenuItem("", true).clickSave().getErrorMessage();
+            String errorMessage = page.selectFirstWeek().fillMenuItem("", true).clickSave().getErrorMessage();
             Assert.assertEquals(errorMessage, "Kiểu Thực Đơn");
         } catch (Exception e) {
             System.out.println("[Error] Have an error : " + e.getMessage());
@@ -80,14 +80,14 @@ public class MenuRegisterByWeekTest extends BaseTest<MenuRegisterByWeekPage> {
 
     @Test(description = "Check error message when empty menu", priority = 6)
     public void TC09() throws InterruptedException {
-        String errorMessage = page.selectDateTimeInPass().selectMealType(Common.MEAL_TYPE_SINGLE).clickSave().getErrorMessage();
+        String errorMessage = page.selectFirstWeek().selectMealType(Common.MEAL_TYPE_SINGLE).clickSave().getErrorMessage();
         Assert.assertEquals(errorMessage, "Thực Đơn");
     }
 
     @Test(description = "Check exist menu", priority = 7)
     public void TC7() throws InterruptedException {
         try {
-            String code = page.selectCurrentDay().fillMenuItem("", true).selectMealType(Common.MEAL_TYPE_SINGLE).clickSave().getCode();
+            String code = page.selectFirstWeek().fillMenuItem("", true).selectMealType(Common.MEAL_TYPE_SINGLE).clickSave().getCode();
             System.out.println("[Result] Check code auto created: " + code);
         } catch (Exception e) {
             System.out.println("[Error] Have an error : " + e.getMessage());
@@ -98,7 +98,7 @@ public class MenuRegisterByWeekTest extends BaseTest<MenuRegisterByWeekPage> {
     @Test(description = "Check exist menu", priority = 8)
     public void TC11() throws InterruptedException {
         try {
-            String code = page.selectCurrentDay().selectMealType(Common.MEAL_TYPE_SINGLE).fillMenuItem(RandomHelper.generateRandomString(20), false).clickSave().getPopupMessage();
+            String code = page.selectFirstWeek().selectMealType(Common.MEAL_TYPE_SINGLE).fillMenuItem(RandomHelper.generateRandomString(20), false).clickSave().getPopupMessage();
         } catch (Exception e) {
             System.out.println("[Error] Have an error : " + e.getMessage());
             Assert.fail();
