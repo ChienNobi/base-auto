@@ -9,7 +9,6 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
 import java.time.Duration;
 
 public class BasePage<T> {
@@ -18,13 +17,16 @@ public class BasePage<T> {
     public Actions action;
     public WebElementHelper webElementHelper;
 
-    @FindBy(xpath = "//input[@name='date']")
+    @FindBy(xpath = "//input[@name='date' or @name='day']")
     public WebElement dateField;
     @FindBy(xpath = "//div[contains(@class, 'o_notification_body')]//ul/li")
     public WebElement errorPopup;
 
     @FindBy(xpath = "//div[contains(@class, 'o_form_sheet')]")
     public WebElement formContainer;
+
+    @FindBy(xpath = "//button[@title='Lưu bản ghi']")
+    public WebElement saveBtn;
 
 
     public BasePage() {
@@ -79,5 +81,11 @@ public class BasePage<T> {
         String error = WebElementHelper.hasElement(errorPopup) ? errorPopup.getText() : "";
         System.out.println("[Result] Error message: " + error);
         return error;
+    }
+
+    public T clickSave() {
+        System.out.println("[Step] click save button");
+        saveBtn.click();
+        return (T) this;
     }
 }

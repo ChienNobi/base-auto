@@ -186,4 +186,51 @@ public class MealRegisterTest extends BaseTest<MealRegisterPage> {
             Assert.fail();
         }
     }
+
+    @Test(description = "Exist customer", priority = 20)
+    public void TC20() throws InterruptedException {
+        try {
+            String code = page.selectCurrentDay().switchTabCustomer().addNewRowForCustomer()
+                    .fillEmployeeName("Khách Hàng A", false)
+                    .fillMenuCustomer("").clickSave().getCodeValue();
+            Assert.assertFalse(code.isEmpty());
+        } catch (Exception e) {
+            System.out.println("[Error] Have an error : " + e.getMessage());
+            Assert.fail();
+        }
+    }
+
+    @Test(description = "Customer do not exist", priority = 21)
+    public void TC21() throws InterruptedException {
+        try {
+            boolean haveDisplayDialog = page.selectCurrentDay().switchTabCustomer().addNewRowForCustomer()
+                    .fillEmployeeName("Bảo Hân 1", false).clickSave()
+                    .checkDisplayedPopupDialog();
+            Assert.assertTrue(haveDisplayDialog);
+        } catch (Exception e) {
+            System.out.println("[Error] Have an error : " + e.getMessage());
+            Assert.fail();
+        }
+    }
+
+    @Test(description = "Empty customer", priority = 23)
+    public void TC23() throws InterruptedException {
+        try {
+            page.selectCurrentDay().switchTabCustomer().clickSave();
+            Assert.assertEquals(WebElementHelper.getModalDialogText(), "Bạn Chưa Đăng Ký Bữa Ăn");
+        } catch (Exception e) {
+            System.out.println("[Error] Have an error : " + e.getMessage());
+            Assert.fail();
+        }
+    }
+
+    @Test(description = "Empty menu when select customer tab", priority = 27)
+    public void TC27() throws InterruptedException {
+        try {
+            page.selectCurrentDay().switchTabCustomer().addNewRowForCustomer().fillEmployeeName("Khách Hàng A", false).clickSave();
+        } catch (Exception e) {
+            System.out.println("[Error] Have an error : " + e.getMessage());
+            Assert.fail();
+        }
+    }
 }

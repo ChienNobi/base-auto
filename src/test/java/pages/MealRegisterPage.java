@@ -15,9 +15,6 @@ import java.util.List;
 import static java.lang.Thread.sleep;
 
 public class MealRegisterPage extends BasePage<MealRegisterPage> {
-    @FindBy(xpath = "//button[@data-hotkey='s']")
-    private WebElement saveBtn;
-
     @FindBy(xpath = "//button[@data-hotkey='j']")
     private WebElement cancelBtn;
 
@@ -44,11 +41,21 @@ public class MealRegisterPage extends BasePage<MealRegisterPage> {
 
     @FindBy(xpath = "//div[contains(@class, 'tab-pane active')]//tbody[@class='ui-sortable']/tr[1]//td[1]//input")
     public WebElement employeeNameField;
+    @FindBy(xpath = "//div[@name='menu_id']//input")
+    public WebElement menuFieldTypeTable;
+
     @FindBy(xpath = "//div[contains(@class, 'tab-pane active')]//tbody[@class='ui-sortable']/tr[1]//td[4]//input")
     public WebElement menuField;
 
+    @FindBy(xpath = "//div[contains(@class, 'tab-pane active')]//tbody[@class='ui-sortable']/tr[1]//td[5]//input")
+    public WebElement menuFieldCustomer;
+
     @FindBy(xpath = "//a[@role='button' and text()='Thêm một dòng']")
     public List<WebElement> addRowBtn;
+
+
+    @FindBy(xpath = "//ul[@class='nav nav-tabs']/li[2]//a[@role='tab']")
+    private WebElement tabCustomer;
 
     public MealRegisterPage() {
         super();
@@ -94,7 +101,7 @@ public class MealRegisterPage extends BasePage<MealRegisterPage> {
 
     public boolean checkListFieldWhenSelectMealType() {
         System.out.println("[Step] check list field when select meal type");
-        return WebElementHelper.hasElement(menuField);
+        return WebElementHelper.hasElement(menuFieldTypeTable);
     }
 
     public MealRegisterPage addNewRowForEmployee() {
@@ -133,9 +140,18 @@ public class MealRegisterPage extends BasePage<MealRegisterPage> {
         return this;
     }
 
-    public MealRegisterPage clickSave() {
-        System.out.println("[Step] click save button");
-        saveBtn.click();
+    public MealRegisterPage fillMenuCustomer(@Optional String menu) {
+        if(menu == null || menu.isEmpty()) {
+            if (!RemoteSearchHelper.selectFirstOption(menuFieldCustomer)) {
+                throw new NotFoundException("Cannot select menu");
+            }
+            return this;
+        }
+        System.out.println("[Step] fill menu: " + menu);
+        boolean isValidMenu = RemoteSearchHelper.isTextExist(menuFieldCustomer, menu);
+        if(!isValidMenu) {
+            throw new NotFoundException("Cannot find menu");
+        }
         return this;
     }
 
@@ -154,6 +170,11 @@ public class MealRegisterPage extends BasePage<MealRegisterPage> {
     public MealRegisterPage clickMoreItem() {
          RemoteSearchHelper.selectMoreItem(employeeNameField);
          return this;
+    }
+
+    public MealRegisterPage switchTabCustomer() {
+        tabCustomer.click();
+        return this;
     }
 }
 
