@@ -12,15 +12,9 @@ import org.testng.annotations.Optional;
 
 import java.util.List;
 
-public class MenuRegisterPage extends BasePage<MenuRegisterPage> {
-    @FindBy(xpath = "//button[@accesskey='s']")
-    private WebElement saveBtn;
-
-    @FindBy(xpath = "//button[@accesskey='j']")
-    private WebElement cancelBtn;
-
-    @FindBy(xpath = "//button[@name='action_register']")
-    private WebElement registerBtn;
+public class MenuRegisterByWeekPage extends BasePage<MenuRegisterByWeekPage> {
+    @FindBy(xpath = "//div[@name='week']//input")
+    private WebElement weekField;
 
     @FindBy(xpath = "//select[@name='type_menu']")
     private WebElement menuTypeSelect;
@@ -34,19 +28,27 @@ public class MenuRegisterPage extends BasePage<MenuRegisterPage> {
     @FindBy(xpath = "//div[@name='menu_ids']//input")
     private WebElement menuItemField;
 
-    public MenuRegisterPage() {
+    public MenuRegisterByWeekPage() {
         super();
-        this.pageUrl = Common.MENU_ADD_BY_DAY;
+        this.pageUrl = Common.MENU_ADD_BY_WEEK;
         PageFactory.initElements(driver, this);
     }
 
-    public MenuRegisterPage selectMealType(String menuType) {
+    public MenuRegisterByWeekPage selectFirstWeek() {
+        System.out.println("[Step] select first week");
+        if (!RemoteSearchHelper.selectFirstOption(weekField)) {
+            throw new NotFoundException("Cannot select week");
+        }
+        return this;
+    }
+
+    public MenuRegisterByWeekPage selectMealType(String menuType) {
         System.out.println("[Step] select menu type");
         WebElementHelper.selectAnOption(menuTypeSelect, menuType);
         return this;
     }
 
-    public MenuRegisterPage fillMenuItem(@Optional String menu, @Optional boolean throwException) {
+    public MenuRegisterByWeekPage fillMenuItem(@Optional String menu, @Optional boolean throwException) {
         if(menu == null || menu.isEmpty()) {
             if (!RemoteSearchHelper.selectFirstOption(menuItemField)) {
                 throw new NotFoundException("Cannot select menu");

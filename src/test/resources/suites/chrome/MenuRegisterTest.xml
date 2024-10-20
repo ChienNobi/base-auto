@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Menu Test">
+    <parameter name="browser" value="chrome"/>
+    <test name="Menu Test">
+        <classes>
+            <class name="tests.MenuRegisterTest" />
+        </classes>
+    </test> <!-- Test -->
+</suite> <!-- Suite -->

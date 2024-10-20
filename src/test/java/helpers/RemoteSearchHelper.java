@@ -41,7 +41,6 @@ public class RemoteSearchHelper {
     }
 
     public static List<WebElement> getChildren(WebElement inputElement, @Optional String text) {
-
         if (text != null && !text.isEmpty()) {
             inputElement.clear();
             inputElement.sendKeys(text);

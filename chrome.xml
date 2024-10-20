@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Chrome Test">
+    <suite-files>
+        <suite-file path="src/test/resources/suites/chrome/MealRegisterTest.xml"/>
+        <suite-file path="src/test/resources/suites/chrome/MenuRegisterTest.xml"/>
+        <suite-file path="src/test/resources/suites/chrome/MenuRegisterByWeekTest.xml"/>
+        <suite-file path="src/test/resources/suites/chrome/PriceRegisterTest.xml"/>
+    </suite-files>
+</suite> <!-- Suite -->

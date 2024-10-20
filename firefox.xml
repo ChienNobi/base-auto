@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Firefox Test">
+    <suite-files>
+        <suite-file path="src/test/resources/suites/firefox/MealRegisterTest.xml"/>
+        <suite-file path="src/test/resources/suites/firefox/MenuRegisterTest.xml"/>
+        <suite-file path="src/test/resources/suites/firefox/MenuRegisterByWeekTest.xml"/>
+        <suite-file path="src/test/resources/suites/firefox/PriceRegisterTest.xml"/>
+    </suite-files>
+</suite> <!-- Suite -->

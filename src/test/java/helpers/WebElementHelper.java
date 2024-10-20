@@ -74,4 +74,9 @@ public class WebElementHelper {
             return false;
         }
     }
+
+    public static void waitForElementHasText(WebElement element) {
+        WebDriverWait wait = new WebDriverWait(BrowserConfig.getDriver(), Duration.ofMillis(SystemDefault.WAIT_PAGE_LOAD));
+        wait.until((ExpectedCondition<Boolean>) driver -> !element.getText().isEmpty());
+    }
 }
