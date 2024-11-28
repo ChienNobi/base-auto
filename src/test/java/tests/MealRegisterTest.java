@@ -32,14 +32,19 @@ public class MealRegisterTest extends BaseTest<MealRegisterPage> {
         System.out.println("[Step] Open Meal Register page");
     }
 
-    @Test(description = "TC01", priority = 1)
+    @Test(description = "TC01: Open Meal Register page", priority = 1)
     public void TC01() throws InterruptedException {
         page.selectMealType(Common.MEAL_TYPE_TABLE).selectNextDay();
         System.out.println("[Step] Open Meal Register page");
     }
 
-    @Test(description = "Check code auto created", priority = 2)
+    @Test(description = "TC02: Check Logged in username and register meal username", priority = 2)
     public void TC02() throws InterruptedException {
+        Assert.assertEquals(page.getRegisterUser(), page.getCurLoggedInUser());
+    }
+
+    @Test(description = "TCO2: Check code auto created", priority = 2)
+    public void TC04() throws InterruptedException {
         try {
             String code = page.selectCurrentDay().addNewRowForEmployee().fillEmployeeName("Bảo Hân", true).fillMenu("").clickSave().getCodeValue();
             Assert.assertFalse(code.isEmpty());
@@ -47,11 +52,6 @@ public class MealRegisterTest extends BaseTest<MealRegisterPage> {
             System.out.println("[Error] Have an error : " + e.getMessage());
             Assert.fail();
         }
-    }
-
-    @Test(description = "Check Logged in username and register meal username", priority = 4)
-    public void TC04() throws InterruptedException {
-        Assert.assertEquals(page.getRegisterUser(), page.getCurLoggedInUser());
     }
 
     @Test(description = "Check list value of meal", priority = 5)
