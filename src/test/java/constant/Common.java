@@ -13,6 +13,8 @@ public class Common {
     public static final String PRICE_LIST = BASE_URL + "#cids=3&menu_id=557&action=564&model=tigo.service&view_type=list";
     public static final String PRICE_REGISTER = BASE_URL + "#cids=3&menu_id=557&action=564&model=tigo.service&view_type=form";
 
+    public static final String DISH_CREATION = BASE_URL + "#cids=3&menu_id=557&action=569&model=tigo.dish&view_type=form";
+
     public static final String MEAL_TYPE_SINGLE = "Suất";
     public static final String MEAL_TYPE_TABLE = "Bàn";
     public static final String PRICE_TYPE_SING = "Hát";

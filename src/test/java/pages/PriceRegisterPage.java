@@ -23,6 +23,7 @@ public class PriceRegisterPage extends BasePage<PriceRegisterPage> {
 
     @FindBy(xpath = "//div[@name='name_id']//input")
     private WebElement peopleRegisterField;
+
     @FindBy(xpath = "//div[@name='room_id']//input")
     private WebElement roomField;
 
